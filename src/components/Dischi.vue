@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id="container">
    
       <Disco v-for="disco, i in listaDischi" :key="i" :details="disco" />
 
@@ -42,5 +42,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+#container {
+    width: 70%;
+    margin: auto;
+    padding: 60px 0;
+    background-color: #1e2d3b;
+    display: flex;
+    flex-wrap: wrap;
+}
 </style>
