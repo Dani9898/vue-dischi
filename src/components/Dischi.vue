@@ -1,7 +1,8 @@
 <template>
   <div id="container">
    
-      <Disco v-for="disco, i in listaDischi" :key="i" :details="disco" />
+      <FilterDischi @search="filterDisks" :details="listaDischi" />
+      <Disco v-for="disco, i in filteredListaDischi" :key="i" :details="disco" />
 
   </div>
 </template>
@@ -10,23 +11,39 @@
 
 import axios from "axios"
 import Disco from '@/components/Disco.vue'
+import FilterDischi from '@/components/FilterDischi.vue'
 
 
 export default {
   name: 'Dischi',
   components: {
-      Disco
+      Disco,
+      FilterDischi
   },
   data(){
       return {
           apiURL: "https://flynn.boolean.careers/exercises/api/array/music",
-          listaDischi: []
+          listaDischi: [],
+          optionValue: ""
       }
   },
 
   created(){
       this.getDischi()
   },
+  
+  computed: {
+      filteredListaDischi() {
+          if (this.optionValue === "") {
+              return this.listaDischi
+          }
+
+          return this.listaDischi.filter((item) => {
+              return item.genre.toLowerCase().includes(this.optionValue.toLowerCase())
+          })
+      }
+  },
+
 
   methods:{
       getDischi(){
@@ -35,6 +52,10 @@ export default {
         .then((result) => {
             this.listaDischi = result.data.response;
         })        
+      },
+
+      filterDisks(value) {
+          this.optionValue = value
       }
   }
 }

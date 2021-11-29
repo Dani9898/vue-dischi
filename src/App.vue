@@ -29,7 +29,7 @@ export default {
     box-sizing: border-box;
   }
 
-#app {
+body {
     background: #1e2d3b;
 }
 
