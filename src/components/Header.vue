@@ -1,14 +1,27 @@
 <template>
 
-    <header></header>
+    <header>
+
+    <select name="genre" v-model="thisValue" @change="$emit('search', thisValue)">
+        <option value="">All</option>
+        <option v-for="genere, i in generi" :key="i" :value="genere" >{{genere}}</option>
+    </select>
+
+    </header>
 
 </template>
 
 <script>
 export default {
   name: 'Header',
-
-
+   props: {
+      generi: Array
+  },
+  data(){
+    return {
+      thisValue: "",
+    }
+  }
 }
 </script>
 

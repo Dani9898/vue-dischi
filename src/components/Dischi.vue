@@ -1,8 +1,7 @@
 <template>
   <div id="container">
-   
-      <FilterDischi @search="filterDisks" :details="listaDischi" />
-      <Disco v-for="disco, i in filteredListaDischi" :key="i" :details="disco" />
+
+    <Disco v-for="disco, i in filteredListaDischi" :key="i" :details="disco" />
 
   </div>
 </template>
@@ -11,20 +10,23 @@
 
 import axios from "axios"
 import Disco from '@/components/Disco.vue'
-import FilterDischi from '@/components/FilterDischi.vue'
+
 
 
 export default {
   name: 'Dischi',
   components: {
-      Disco,
-      FilterDischi
+      Disco
   },
+  props: {
+      genreToSearch: String
+  },
+
   data(){
       return {
           apiURL: "https://flynn.boolean.careers/exercises/api/array/music",
           listaDischi: [],
-          optionValue: ""
+          listaGeneri: []
       }
   },
 
@@ -34,13 +36,13 @@ export default {
   
   computed: {
       filteredListaDischi() {
-          if (this.optionValue === "") {
+          if (this.genreToSearch === "") {
               return this.listaDischi
           }
 
-          return this.listaDischi.filter((item) => {
-              return item.genre.toLowerCase().includes(this.optionValue.toLowerCase())
-          })
+          return this.listaDischi.filter(
+              (item) => item.genre === this.genreToSearch
+          )
       }
   },
 
@@ -50,13 +52,19 @@ export default {
         axios
         .get(this.apiURL)
         .then((result) => {
+
             this.listaDischi = result.data.response;
+
+            this.listaDischi.forEach((disco) => {
+                if (!this.listaGeneri.includes(disco.genre)) {
+                    this.listaGeneri.push(disco.genre)
+                }
+            });
+
+            this.$emit("generiList", this.listaGeneri);
+
         })        
       },
-
-      filterDisks(value) {
-          this.optionValue = value
-      }
   }
 }
 </script>

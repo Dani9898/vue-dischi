@@ -1,9 +1,9 @@
 <template>
   <div id="app">
 
-    <Header/>
+    <Header :generi="listaGeneri" @search="getGenreValue" />
 
-    <Dischi/>
+    <Dischi :genreToSearch="genreValue" @generiList="getGeneriList" />
 
   </div>
 </template>
@@ -17,6 +17,21 @@ export default {
   components: {
     Header,
     Dischi
+  },
+  data() {
+    return {
+      listaGeneri: [],
+      genreValue: ""
+    }
+  },
+  methods: {
+    getGeneriList(allGenres) {
+      this.listaGeneri = allGenres
+    },
+    getGenreValue(value) {
+      this.genreValue = value
+    }
+    
   }
 }
 </script>
